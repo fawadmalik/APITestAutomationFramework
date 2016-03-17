@@ -1,0 +1,19 @@
+/**
+ * 
+ */
+package gov.nasa.api.model;
+
+/**
+ * @author kvyas
+ *
+ */
+public class SoundApiResponseModel {
+
+	/**
+	 * 
+	 */
+	public SoundApiResponseModel() {
+		// TODO Auto-generated constructor stub
+	}
+
+}

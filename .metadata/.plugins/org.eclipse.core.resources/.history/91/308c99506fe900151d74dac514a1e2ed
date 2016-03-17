@@ -1,0 +1,26 @@
+/**
+ * 
+ */
+package gov.nasa.api.util;
+
+/**
+ * @author kvyas
+ *
+ */
+public class SoundAPIRequestBuilder {
+
+	String paramLimit;
+	String paramQuery;
+	
+	public SoundAPIRequestBuilder() {
+		
+	}	
+	
+	public static 
+
+	public SoundAPIRequestBuilder build() {
+		
+		return new SoundAPIRequestBuilder();
+	}
+
+}

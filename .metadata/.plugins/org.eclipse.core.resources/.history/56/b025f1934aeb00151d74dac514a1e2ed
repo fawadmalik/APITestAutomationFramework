@@ -1,0 +1,46 @@
+# Certification for API Testing
+
+### Test Strategy 
+Design and implement test automation framework 
+* Reliable
+* Extensible
+* Repeatable
+* Reportable
+
+Complete executions of agreed automated as well as manual tests.  Testcases should have been designed and reviewed prior to writing any automation for them.  Ensure P0, P1 and P2 scenarios are automated and included in regression test suite consisting of below modules.
+
+### Automation Test Framework Modules [Inverted Pyramid]
+* Unit Test
+    * Use Mocks and Stubs to abstract out any external component dependency.
+    * Fast
+* Functional Test
+    * Individual functional components tested as whole 
+* UI Test
+    * Use in memory store 
+    * API to create data prior to testing UI interaction
+* System Test 
+    * Benchmark performance limits
+    * Benchmark load limits
+
+**********************************************************************************
+
+* Pre-checkin Test
+    * Run combination of Unit and subset of Functional tests 
+* Release Sanity Tests
+    * Run set of functional, UI and System Tests 
+
+Once above automation modules are developed, summarized metrics are generated and the process can be repeated any number of times, reliably - we should be in good shape for certification.
+
+### Pre Release Activities and Sign Offs
+* Security sign-off from the Application Security team has been received.
+* Depending on development practices followed within organization, a round of exploratory testing across the teams should be useful, especially for large new features.
+
+### API Under Test
+    GET https://api.nasa.gov/planetary/sounds
+
+Once above practices and frameworks are put in place - lets focus on authoring test cases for the API under test.
+
+
+
+
+

@@ -1,0 +1,97 @@
+package gov.nasa.api;
+
+import java.util.ArrayList;
+import java.util.Map;
+
+import gov.nasa.api.model.SoundApiResponseModel;
+import gov.nasa.api.util.APIUtil;
+import gov.nasa.api.util.SoundAPIDataUtil;
+
+import org.hamcrest.Matchers;
+import org.testng.Assert;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
+
+import com.jayway.restassured.RestAssured;
+import com.jayway.restassured.http.ContentType;
+import com.jayway.restassured.path.json.JsonPath;
+import com.jayway.restassured.response.Response;
+
+/**
+ * Planetary sounds API test class
+ * 
+ * @author kvyas
+ */
+public class SoundsApiTest extends BaseApiTest {
+	
+	@BeforeClass
+	public void setup() {
+		super.setup();
+		// do any test class specific setup..
+	}
+	
+	@AfterClass
+	public void teardown() {
+		super.teardown();
+		// do any test class specific tear down.
+	}
+	
+	/*
+	 * There is a defect on server side where it fails to handle invalid limit
+	 * input. It ends up returning code 500 (Internal server error) instead of
+	 * 400 (bad request). We have to be careful as sometimes leaking stacktraces
+	 * can also be a security concern.
+	 */
+	@Test(dataProviderClass=SoundAPIDataUtil.class, dataProvider = "headerTestParams")
+	public void testGetDataResponseHeaders(String q, String limit,
+			int httpStatusCode) {
+		
+		RestAssured
+				.expect()
+				.statusCode(httpStatusCode)
+				.contentType(ContentType.JSON)
+				.when()
+				.get(APIUtil.buildSoundApiRequest(q,limit));
+	}
+
+	@Test(dataProviderClass=SoundAPIDataUtil.class, dataProvider = "bodyTestParams")
+	public void testDataLimitCount(String q, String limit) {
+
+		RestAssured
+				.expect()
+				.body("count", Matchers.equalTo(1))
+				.when()
+				.get(APIUtil.buildSoundApiRequest(q,limit));
+	}
+	
+	@Test(dataProviderClass=SoundAPIDataUtil.class, dataProvider = "bodyTestParams")
+	public void testDataDetails(String q, String limit) {
+
+		String jsonResponse = RestAssured
+							.when()
+							.get(APIUtil.buildSoundApiRequest(q,limit))
+							.then().extract().response().asString();
+		
+		JsonPath jsonPath = new JsonPath(jsonResponse);
+		@SuppressWarnings("unchecked")
+		ArrayList<Map<String,?>> jsonAsArrayList = (ArrayList<Map<String,?>>) jsonPath.get("results");
+		Assert.assertEquals(jsonAsArrayList.size(), 1);
+		for(Map<String,?> element : jsonAsArrayList) {
+			Assert.assertEquals(element.get("license"), "cc-by-nc-sa");
+		}
+	}
+
+	@Test(dataProviderClass = SoundAPIDataUtil.class, dataProvider = "bodyTestParams")
+	public void testDataDetails2(String q, String limit) {
+
+		SoundApiResponseModel[] responses = RestAssured.when()
+				.get(APIUtil.buildSoundApiRequest(q, limit))
+				.then().extract().path("results");
+		System.out.println(responses[0].getDescription());
+		System.out.println(responses[0].getTitle());
+
+	}
+
+
+}

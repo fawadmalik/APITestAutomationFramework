@@ -1,0 +1,9 @@
+package gov.nasa.api.util;
+
+public class APIUtil {
+	
+	public static String buildGET() {
+		return null;
+	}
+
+}

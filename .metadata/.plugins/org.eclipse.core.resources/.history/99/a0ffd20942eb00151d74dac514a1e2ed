@@ -1,0 +1,69 @@
+package gov.nasa.api;
+
+import gov.nasa.api.util.APIUtil;
+import gov.nasa.api.util.SoundAPIDataUtil;
+import gov.nasa.api.util.SoundAPIRequest;
+
+import org.apache.http.HttpStatus;
+import org.hamcrest.Matchers;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
+
+import com.jayway.restassured.RestAssured;
+import com.jayway.restassured.http.ContentType;
+
+/**
+ * Planetary sounds API test class
+ * 
+ * @author kvyas
+ */
+public class SoundsApiTest extends BaseApiTest {
+	
+	@BeforeClass
+	public void setup() {
+		
+	}
+	
+	@AfterClass
+	public void teardown() {
+		super.teardown();
+		
+		// do any test class specific tear down.
+	}
+	
+	/*
+	 * There is a defect on server side where it fails to handle invalid limit
+	 * input. It ends up returning code 500 (Internal server error) instead of
+	 * 400 (bad request). We have to be careful as sometimes leaking stacktraces
+	 * can also be a security concern.
+	 */
+	@Test(dataProviderClass=SoundAPIDataUtil.class, dataProvider = "headerTestParams")
+	public void testGetDataResponseHeaders(String q, String limit,
+			int httpStatusCode) {
+		
+		System.out.println(RestAssured.baseURI + RestAssured.basePath + APIUtil.buildSoundApiRequest(q,limit));
+		RestAssured
+				.expect()
+				.statusCode(httpStatusCode)
+				.contentType(ContentType.JSON)
+				.when()
+				.get(APIUtil.buildSoundApiRequest(q,limit));
+	}
+
+	@Test(dataProviderClass=SoundAPIDataUtil.class, dataProvider = "headerTestParams")
+	public void testGetDataResponseBody(String q, String limit,
+			int httpStatusCode) {
+		System.out.println(RestAssured.baseURI + RestAssured.basePath + APIUtil.buildSoundApiRequest(q,limit));
+
+		RestAssured
+				.expect()
+				.statusCode(httpStatusCode)
+				.contentType(ContentType.JSON)
+				.when()
+				.get(APIUtil.buildSoundApiRequest(q,limit));
+	}
+
+
+}

@@ -1,0 +1,8 @@
+package gov.nasa.api.util;
+
+public class APIUtil {
+	
+	public static final String API_SECURE_DOMAIN = "https://api.nasa.gov";
+	public static final String REST_PATH_PLANET = "/planetary";
+
+}
