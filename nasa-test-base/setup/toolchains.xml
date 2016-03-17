@@ -1,0 +1,13 @@
+<toolchains>
+  <toolchain>
+     <type>jdk</type>
+     <provides>
+         <vendor>sun</vendor>
+         <version>1.7</version>
+     </provides>
+     <configuration>
+        <jdkHome>/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Home</jdkHome>
+     </configuration>
+  </toolchain>
+</toolchains>
+~              
